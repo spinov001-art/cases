@@ -1,0 +1,10 @@
+{
+  "rewrites": [
+    { "source": "/cases", "destination": "/public/cases.html" },
+    { "source": "/cases1", "destination": "/public/cases1.html" },
+    { "source": "/cases2", "destination": "/public/cases2.html" },
+    { "source": "/cases3", "destination": "/public/cases3.html" },
+    { "source": "/cases4", "destination": "/public/cases4.html" },
+    { "source": "/caseskp", "destination": "/public/caseskp.html" }
+  ]
+}
