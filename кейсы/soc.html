@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кейс: Экспресс-исследование рынка SOC</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', Arial, sans-serif;
+            background: #FFFFFF;
+            color: #1A1A1A;
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100vh;
+            padding: 60px 100px;
+            background: #FFFFFF;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            animation: smoothFade 0.6s ease;
+        }
+
+        @keyframes smoothFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Акцентная линия сверху */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #0066FF 0%, #4A90E2 100%);
+        }
+
+        /* Титульный слайд */
+        .slide-title {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .slide-title h1 {
+            font-size: 3.2em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            color: #1A1A1A;
+            letter-spacing: -1px;
+        }
+
+        .slide-title .subtitle {
+            font-size: 1.3em;
+            color: #6C757D;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+
+        .slide-title .badge {
+            display: inline-block;
+            padding: 10px 28px;
+            background: #F0F4FF;
+            border: 1px solid #D1E0FF;
+            border-radius: 30px;
+            color: #0066FF;
+            font-size: 0.95em;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        /* Общие стили заголовков */
+        h2 {
+            font-size: 2.2em;
+            margin-bottom: 35px;
+            font-weight: 600;
+            color: #1A1A1A;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #E9ECEF;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            margin: 25px 0 18px;
+            color: #0066FF;
+            font-weight: 600;
+        }
+
+        /* Карточки */
+        .clean-card {
+            background: #FFFFFF;
+            border: 1px solid #E9ECEF;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 18px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s ease;
+        }
+
+        .clean-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.08);
+            border-color: #D1E0FF;
+        }
+
+        .card-title {
+            font-size: 1.15em;
+            color: #1A1A1A;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .card-content {
+            color: #6C757D;
+            font-size: 1em;
+            line-height: 1.6;
+        }
+
+        /* Списки */
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            color: #495057;
+            font-size: 1.05em;
+            line-height: 1.8;
+            margin-bottom: 12px;
+            padding-left: 28px;
+            position: relative;
+        }
+
+        ul li::before {
+            content: "•";
+            color: #0066FF;
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+            font-size: 1.3em;
+        }
+
+        /* Метрики */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .metric-box {
+            background: #F8F9FA;
+            border: 1px solid #E9ECEF;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .metric-box:hover {
+            background: #F0F4FF;
+            border-color: #D1E0FF;
+        }
+
+        .metric-value {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #0066FF;
+            margin-bottom: 8px;
+        }
+
+        .metric-label {
+            font-size: 0.9em;
+            color: #6C757D;
+            font-weight: 500;
+        }
+
+        /* Цитата */
+        .quote-box {
+            background: #F8F9FA;
+            border-left: 4px solid #0066FF;
+            padding: 24px 28px;
+            margin: 25px 0;
+            font-style: italic;
+            color: #495057;
+            font-size: 1.1em;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Таймлайн */
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+            margin: 30px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #E9ECEF;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -46px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            background: #0066FF;
+            border-radius: 50%;
+            border: 3px solid #FFFFFF;
+            box-shadow: 0 0 0 1px #E9ECEF;
+        }
+
+        .timeline-title {
+            font-size: 1.1em;
+            color: #1A1A1A;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .timeline-desc {
+            color: #6C757D;
+            font-size: 0.95em;
+        }
+
+        /* Навигация */
+        .nav-container {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 48px;
+            height: 48px;
+            background: #FFFFFF;
+            border: 1px solid #E9ECEF;
+            border-radius: 50%;
+            color: #0066FF;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4em;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .nav-btn:hover {
+            background: #0066FF;
+            color: #FFFFFF;
+            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.2);
+        }
+
+        /* Счетчик слайдов */
+        .slide-counter {
+            position: fixed;
+            top: 40px;
+            right: 80px;
+            color: #6C757D;
+            font-size: 1.1em;
+            font-weight: 600;
+            z-index: 1000;
+        }
+
+        .slide-counter .current {
+            color: #0066FF;
+            font-size: 1.5em;
+        }
+
+        /* Highlight */
+        .highlight {
+            color: #0066FF;
+            font-weight: 600;
+        }
+
+        /* CTA Button */
+        .cta-button {
+            display: inline-block;
+            padding: 14px 32px;
+            background: #0066FF;
+            color: #FFFFFF;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.05em;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid #0066FF;
+        }
+
+        .cta-button:hover {
+            background: #0052CC;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+        }
+
+        /* Grid 2 колонки */
+        .two-col-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        /* Решение блоки */
+        .solution-block {
+            background: #F8F9FA;
+            border: 1px solid #E9ECEF;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .solution-block:hover {
+            background: #F0F4FF;
+            border-color: #D1E0FF;
+        }
+
+        .solution-block strong {
+            color: #1A1A1A;
+            font-size: 1.05em;
+        }
+
+        .solution-block p {
+            color: #6C757D;
+            margin: 8px 0 0 0;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+<div class="slideshow-container">
+
+    <!-- Слайд 1: Титульный / Вход -->
+    <div class="slide active slide-title">
+        <h1>Экспресс-исследование<br>рынка кибербезопасности</h1>
+        <div class="subtitle">Анализ спроса на SOC-услуги за 24 часа</div>
+        <div class="badge">Security Operations Center • 2024-2026</div>
+
+        <div class="clean-card" style="max-width: 700px; margin: 50px auto 0;">
+            <div class="card-title">
+                Что было у клиента
+            </div>
+            <div class="card-content">
+                Компания в сфере кибербезопасности. Нужна была срочная оценка спроса на услуги центров мониторинга киберугроз (SOC).
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 900px; margin: 30px auto;">
+            <div class="clean-card" style="padding: 20px;">
+                <div class="card-content">❌ Данных о рынке SOC</div>
+            </div>
+            <div class="clean-card" style="padding: 20px;">
+                <div class="card-content">❌ Прогноза спроса на 2026</div>
+            </div>
+            <div class="clean-card" style="padding: 20px;">
+                <div class="card-content">❌ Статистики по решениям</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Слайд 2: Задача -->
+    <div class="slide">
+        <h2>Задача от клиента</h2>
+
+        <div class="quote-box">
+            "Нужно найти спрос на услуги SOC за 24-25 год и прогноз на 26 год. Также динамику покупок MaxPatrol и KUMA"
+        </div>
+
+        <h3>Требования к исследованию:</h3>
+
+        <div class="two-col-grid">
+            <div class="clean-card">
+                <div class="card-title">📊 Рынок SOC</div>
+                <div class="card-content">
+                    Спрос на услуги центров мониторинга: 2024-2025 + прогноз 2026
+                </div>
+            </div>
+
+            <div class="clean-card">
+                <div class="card-title">🛡️ MaxPatrol</div>
+                <div class="card-content">
+                    Количество покупок и динамика роста лицензий
+                </div>
+            </div>
+
+            <div class="clean-card">
+                <div class="card-title">🔍 KUMA Касперский</div>
+                <div class="card-content">
+                    Статистика покупок платформы для SOC
+                </div>
+            </div>
+
+            <div class="clean-card">
+                <div class="card-title">⏱️ Срок</div>
+                <div class="card-content">
+                    Экспресс-формат: готовность за 24 часа
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Слайд 3: Процесс работы -->
+    <div class="slide">
+        <h2>Процесс работы</h2>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-title">День 1: Получение ТЗ</div>
+                <div class="timeline-desc">Анализ запроса, уточнение требований</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-title">День 2: Исследование</div>
+                <div class="timeline-desc">Сбор данных по SOC, MaxPatrol, KUMA</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-title">День 3: Превью</div>
+                <div class="timeline-desc">Отправка первых 5-7 страниц</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-title">День 4: Фидбек</div>
+                <div class="timeline-desc">Получение положительной обратной связи</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-title">Результат: Оформление</div>
+                <div class="timeline-desc">Клиент принял решение сразу</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Слайд 4: Решение -->
+    <div class="slide">
+        <h2>Что было сделано</h2>
+
+        <div class="solution-block">
+            <strong>🔒 Анализ рынка SOC</strong>
+            <p>Спрос 2024-2025, прогноз 2026, ключевые игроки</p>
+        </div>
+
+        <div class="solution-block">
+            <strong>📈 Статистика MaxPatrol</strong>
+            <p>Динамика продаж лицензий, целевые сегменты</p>
+        </div>
+
+        <div class="solution-block">
+            <strong>🛡️ Данные по KUMA</strong>
+            <p>Покупки платформы Kaspersky для SOC</p>
+        </div>
+
+        <div class="solution-block">
+            <strong>🔗 Надежные источники</strong>
+            <p>Все данные с кликабельными ссылками</p>
+        </div>
+
+        <div class="solution-block">
+            <strong>⚡ Экспресс-формат</strong>
+            <p>Готовность за 24 часа с момента запроса</p>
+        </div>
+    </div>
+
+    <!-- Слайд 5: Ключевые находки -->
+    <div class="slide">
+        <h2>Ключевые цифры</h2>
+
+        <div class="metrics-grid" style="margin-bottom: 40px;">
+            <div class="metric-box">
+                <div class="metric-value">24ч</div>
+                <div class="metric-label">Срок работы</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-value">SOC</div>
+                <div class="metric-label">Рынок 2024-2026</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-value">2</div>
+                <div class="metric-label">Решения</div>
+            </div>
+        </div>
+
+        <h3>Что выявили:</h3>
+
+        <div class="two-col-grid">
+            <div class="clean-card">
+                <div class="card-title">📈 Рост спроса</div>
+                <div class="card-content">
+                    Увеличение интереса к SOC-услугам
+                </div>
+            </div>
+
+            <div class="clean-card">
+                <div class="card-title">🎯 Целевые сегменты</div>
+                <div class="card-content">
+                    Компании, покупающие лицензии
+                </div>
+            </div>
+
+            <div class="clean-card">
+                <div class="card-title">🔒 Инвестиции</div>
+                <div class="card-content">
+                    Динамика роста в кибербезопасность
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Слайд 6: Результаты -->
+    <div class="slide">
+        <h2>Результаты для клиента</h2>
+
+        <div class="metrics-grid" style="margin-bottom: 35px;">
+            <div class="metric-box">
+                <div class="metric-value">24 часа</div>
+                <div class="metric-label">Экспресс-работа</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-value">10 000₽</div>
+                <div class="metric-label">Стоимость</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-value">100%</div>
+                <div class="metric-label">Одобрение</div>
+            </div>
+        </div>
+
+        <h3>Ценность для бизнеса:</h3>
+
+        <ul>
+            <li>Быстрая оценка рынка SOC за 24 часа</li>
+            <li>Данные по MaxPatrol и KUMA с источниками</li>
+            <li>Готовая база для принятия решений</li>
+            <li>Кликабельные ссылки на все источники</li>
+        </ul>
+
+        <div class="quote-box" style="margin-top: 25px;">
+            "Быстро, по делу, источники кликабельные, видно профессионализм." — фидбек клиента
+        </div>
+    </div>
+
+    <!-- Слайд 7: CTA -->
+    <div class="slide slide-title">
+        <h2 style="border: none; text-align: center; margin-bottom: 40px;">Нужно экспресс-исследование?</h2>
+
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; max-width: 900px; margin: 30px auto;">
+            <div class="solution-block">
+                <strong>⚡ Экспресс-формат</strong>
+                <p>Готовность за 24-48 часов</p>
+            </div>
+
+            <div class="solution-block">
+                <strong>🔗 Надежные источники</strong>
+                <p>Все данные с ссылками</p>
+            </div>
+
+            <div class="solution-block">
+                <strong>🎯 Узкие ниши</strong>
+                <p>Специализированные рынки</p>
+            </div>
+
+            <div class="solution-block">
+                <strong>✅ Превью бесплатно</strong>
+                <p>Первые 5-7 страниц для оценки</p>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 45px;">
+            <div style="font-size: 1.6em; color: #1A1A1A; font-weight: 600; margin-bottom: 25px;">
+                Сроки: от 24 часов | Стоимость: от 10 000 ₽
+            </div>
+
+            <a href="tel:+79994531985" class="cta-button">📱 +7 (999) 453-19-85</a>
+            <a href="https://t.me/AlekseySpinov" class="cta-button" style="margin-left: 15px;">💬 Telegram</a>
+
+            <div style="margin-top: 35px; color: #6C757D; font-size: 1.05em;">
+                <strong style="color: #1A1A1A;">Спинов Алексей</strong><br>
+                Маркетолог-аналитик
+            </div>
+
+            <div style="margin-top: 30px; padding: 20px; background: #F8F9FA; border-radius: 12px; max-width: 600px; margin-left: auto; margin-right: auto; border: 1px solid #E9ECEF;">
+                <div style="color: #495057; font-size: 0.95em; line-height: 1.6;">
+                    <strong style="color: #0066FF;">P.S.</strong> Сначала делаю превью 5-7 страниц. Если подойдет — оформляем. Нет — никаких обязательств.
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Навигация -->
+<div class="nav-container">
+    <button class="nav-btn prev" onclick="changeSlide(-1)">‹</button>
+    <button class="nav-btn next" onclick="changeSlide(1)">›</button>
+</div>
+
+<!-- Счетчик -->
+<div class="slide-counter">
+    <span class="current">1</span> / 7
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+
+    function showSlide(n) {
+        slides[currentSlide].classList.remove('active');
+
+        if (n >= totalSlides) {
+            currentSlide = 0;
+        } else if (n < 0) {
+            currentSlide = totalSlides - 1;
+        } else {
+            currentSlide = n;
+        }
+
+        slides[currentSlide].classList.add('active');
+        document.querySelector('.slide-counter .current').textContent = currentSlide + 1;
+    }
+
+    function changeSlide(direction) {
+        showSlide(currentSlide + direction);
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft') changeSlide(-1);
+        if (e.key === 'ArrowRight') changeSlide(1);
+    });
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    document.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+
+    document.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    });
+
+    function handleSwipe() {
+        if (touchEndX < touchStartX - 50) changeSlide(1);
+        if (touchEndX > touchStartX + 50) changeSlide(-1);
+    }
+</script>
+
+</body>
+</html>

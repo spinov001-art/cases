@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кейс: Исследование премиальных SPA-объектов</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', 'Georgia', serif;
+            background: linear-gradient(135deg, #F5F1E8 0%, #E8DFD0 100%);
+            color: #2C2416;
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100vh;
+            padding: 50px 80px;
+            background: linear-gradient(135deg, #FAF7F0 0%, #F0EBE0 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            animation: elegantFade 0.8s ease-in;
+        }
+
+        @keyframes elegantFade {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Декоративные элементы */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #C9A961 0%, #2D5F4F 50%, #C9A961 100%);
+        }
+
+        /* Титульный слайд */
+        .slide-title {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .slide-title h1 {
+            font-size: 3.5em;
+            font-weight: 400;
+            margin-bottom: 20px;
+            line-height: 1.3;
+            color: #2D5F4F;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .slide-title .subtitle {
+            font-size: 1.6em;
+            color: #7A6F5D;
+            margin-bottom: 40px;
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        .slide-title .ornament {
+            display: inline-block;
+            width: 150px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, #C9A961 50%, transparent 100%);
+            margin: 25px 0;
+        }
+
+        /* Общие стили заголовков */
+        h2 {
+            font-size: 2.5em;
+            margin-bottom: 35px;
+            font-weight: 400;
+            color: #2D5F4F;
+            border-bottom: 2px solid #C9A961;
+            padding-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        h3 {
+            font-size: 1.7em;
+            margin: 25px 0 15px;
+            color: #C9A961;
+            font-weight: 400;
+        }
+
+        /* Карточки */
+        .luxury-card {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F9F6F0 100%);
+            border: 1px solid #E8DCC8;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(201, 169, 97, 0.1);
+            position: relative;
+        }
+
+        .luxury-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #C9A961 0%, #2D5F4F 100%);
+            border-radius: 8px 0 0 8px;
+        }
+
+        .card-title {
+            font-size: 1.3em;
+            color: #2D5F4F;
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding-left: 15px;
+        }
+
+        .card-content {
+            color: #5A5145;
+            font-size: 1.05em;
+            line-height: 1.6;
+            padding-left: 15px;
+        }
+
+        /* Списки */
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            color: #5A5145;
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 12px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        ul li::before {
+            content: "◆";
+            color: #C9A961;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* Метрики */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .metric-box {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F9F6F0 100%);
+            border: 2px solid #C9A961;
+            border-radius: 8px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(201, 169, 97, 0.15);
+        }
+
+        .metric-value {
+            font-size: 2.8em;
+            font-weight: 600;
+            color: #2D5F4F;
+            margin-bottom: 10px;
+            font-family: 'Georgia', serif;
+        }
+
+        .metric-label {
+            font-size: 0.95em;
+            color: #7A6F5D;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Цитата */
+        .quote-box {
+            background: linear-gradient(135deg, #F9F6F0 0%, #F0EBE0 100%);
+            border-left: 4px solid #C9A961;
+            padding: 25px 30px;
+            margin: 25px 0;
+            font-style: italic;
+            color: #5A5145;
+            font-size: 1.15em;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Таймлайн */
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+            margin: 30px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, #C9A961 0%, #2D5F4F 100%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -47px;
+            top: 5px;
+            width: 14px;
+            height: 14px;
+            background: #C9A961;
+            border-radius: 50%;
+            border: 2px solid #F5F1E8;
+            box-shadow: 0 0 0 3px #C9A961;
+        }
+
+        .timeline-title {
+            font-size: 1.2em;
+            color: #2D5F4F;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .timeline-desc {
+            color: #7A6F5D;
+            font-size: 1em;
+        }
+
+        /* Навигация */
+        .nav-container {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F9F6F0 100%);
+            border: 2px solid #C9A961;
+            border-radius: 50%;
+            color: #2D5F4F;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(201, 169, 97, 0.2);
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, #C9A961 0%, #B89851 100%);
+            color: #FFFFFF;
+            transform: scale(1.05);
+        }
+
+        /* Счетчик слайдов */
+        .slide-counter {
+            position: fixed;
+            top: 40px;
+            right: 80px;
+            color: #7A6F5D;
+            font-size: 1.2em;
+            font-weight: 600;
+            z-index: 1000;
+        }
+
+        .slide-counter .current {
+            color: #C9A961;
+            font-size: 1.6em;
+        }
+
+        /* Highlight */
+        .highlight {
+            color: #C9A961;
+            font-weight: 600;
+        }
+
+        /* CTA Button */
+        .cta-button {
+            display: inline-block;
+            padding: 18px 45px;
+            background: linear-gradient(135deg, #C9A961 0%, #B89851 100%);
+            color: #FFFFFF;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-top: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(201, 169, 97, 0.3);
+            border: 2px solid #C9A961;
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(135deg, #2D5F4F 0%, #1E4035 100%);
+            border-color: #2D5F4F;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(45, 95, 79, 0.4);
+        }
+
+        /* Grid 2 колонки */
+        .two-col-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin: 25px 0;
+        }
+
+        /* Решение блоки */
+        .solution-block {
+            background: linear-gradient(135deg, #FFFFFF 0%, #F9F6F0 100%);
+            border: 1px solid #E8DCC8;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(201, 169, 97, 0.08);
+        }
+
+        .solution-block strong {
+            color: #2D5F4F;
+            font-size: 1.1em;
+        }
+
+        .solution-block p {
+            color: #5A5145;
+            margin: 8px 0 0 0;
+            line-height: 1.5;
+        }
+
+        /* Тег проекта */
+        .project-tag {
+            display: inline-block;
+            padding: 12px 35px;
+            background: linear-gradient(135deg, #2D5F4F 0%, #1E4035 100%);
+            border: 2px solid #C9A961;
+            border-radius: 50px;
+            color: #FFFFFF;
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-top: 20px;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="slideshow-container">
+
+    <!-- Слайд 1: Титульный / Вход -->
+    <div class="slide active slide-title">
+        <h1>Премиальные<br>SPA-объекты</h1>
+        <div class="ornament"></div>
+        <div class="subtitle">Глобальное исследование luxury wellness-индустрии</div>
+        <div class="project-tag">✦ Россия • Европа • Америка • Эмираты ✦</div>
+
+        <div class="luxury-card" style="max-width: 700px; margin: 50px auto 0;">
+            <div class="card-title">
+                Что было у клиента
+            </div>
+            <div class="card-content">
+                Агентство, специализирующееся на премиальных спа-проектах. Необходимо было изучить рынок для стратегического развития.
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 900px; margin: 30px auto;">
+            <div class="luxury-card" style="padding: 20px;">
+                <div class="card-content">❌ Обзора премиальных спа РФ</div>
+            </div>
+            <div class="luxury-card" style="padding: 20px;">
+                <div class="card-content">❌ Анализа международных объектов</div>
+            </div>
+            <div class="luxury-card" style="padding: 20px;">
+                <div class="card-content">❌ Сравнительных таблиц</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Слайд 2: Задача -->
+    <div class="slide">
+        <h2>Задача от клиента</h2>
+
+        <div class="quote-box">
+            "Изучить рынок премиальных спа-объектов: РФ и международные. Важно знание английского — в исследовании будут другие страны"
+        </div>
+
+        <h3>Требования к исследованию:</h3>
+
+        <div class="two-col-grid">
+            <div class="luxury-card">
+                <div class="card-title">📍 Российские объекты</div>
+                <div class="card-content">
+                    10+ премиальных спа: отели с аква-термальными комплексами, салоны с банями, центры с медицинскими услугами
+                </div>
+            </div>
+
+            <div class="luxury-card">
+                <div class="card-title">🌍 Международные объекты</div>
+                <div class="card-content">
+                    Европа, Америка, Эмираты — аналогичные категории для сравнения
+                </div>
+            </div>
+
+            <div class="luxury-card">
+                <div class="card-title">📊 Таблицы и данные</div>
+                <div class="card-content">
+                    Услуги, цены, позиционирование с указанием источников
+                </div>
+            </div>
+
+            <div class="luxury-card">
+                <div class="card-title">✅ Согласование</div>
+                <div class="card-content">
+                    Предварительное согласование списка конкурентов с клиентом
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Слайд 3: Процесс работы -->
+    <div class="slide">
+        <h2>Процесс работы</h2>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-title">День 1: Согласование ТЗ</div>
+                <div class="timeline-desc">Получение требований, обсуждение формата таблиц</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-title">День 2-3: Исследование и анализ</div>
+                <div class="timeline-desc">Поиск 10+ российских и международных объектов, анализ на английском и русском</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-title">День 4: Превью (5-7 страниц)</div>
+                <div class="timeline-desc">Отправка первых страниц для согласования подхода</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-title">День 5: Обсуждение и корректировки</div>
+                <div class="timeline-desc">Звонок с клиентом, уточнение дополнений</div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-title">Финал: Полная версия</div>
+                <div class="timeline-desc">Исследование с таблицами, источниками, возможностью редактирования</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Слайд 4: Решение -->
+    <div class="slide">
+        <h2>Что было сделано</h2>
+
+        <div class="solution-block">
+            <strong>🏨 Российские премиальные объекты</strong>
+            <p>Анализ 10+ спа: гостиничные комплексы, салоны с банями, медицинские центры</p>
+        </div>
+
+        <div class="solution-block">
+            <strong>🌍 Международные объекты</strong>
+            <p>Европа, Америка, Эмираты — аналогичные категории для сравнения рынков</p>
+        </div>
+
+        <div class="solution-block">
+            <strong>📊 Сравнительные таблицы</strong>
+            <p>Услуги, цены, позиционирование с надежными источниками данных</p>
+        </div>
+
+        <div class="solution-block">
+            <strong>🔍 Детальный анализ каждого объекта</strong>
+            <p>Описание концепции, целевой аудитории, уникальных предложений</p>
+        </div>
+
+        <div class="solution-block">
+            <strong>📝 Редактируемый формат</strong>
+            <p>HTML с возможностью внесения правок и дополнений</p>
+        </div>
+    </div>
+
+    <!-- Слайд 5: Ключевые находки -->
+    <div class="slide">
+        <h2>Ключевые находки</h2>
+
+        <div class="metrics-grid" style="margin-bottom: 40px;">
+            <div class="metric-box">
+                <div class="metric-value">10+</div>
+                <div class="metric-label">Объектов РФ</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-value">10+</div>
+                <div class="metric-label">Международных</div>
+            </div>
+            <div class="metric-box">
+                <div class="metric-value">3</div>
+                <div class="metric-label">Категории спа</div>
+            </div>
+        </div>
+
+        <h3>Выявленные паттерны:</h3>
+
+        <div class="two-col-grid">
+            <div class="luxury-card">
+                <div class="card-title">💎 Премиум-сегмент</div>
+                <div class="card-content">
+                    Фокус на эксклюзивность и персонализацию
+                </div>
+            </div>
+
+            <div class="luxury-card">
+                <div class="card-title">🌿 Wellness-тренд</div>
+                <div class="card-content">
+                    Интеграция медицинских услуг и холистического подхода
+                </div>
+            </div>
+
+            <div class="luxury-card">
+                <div class="card-title">🏆 Конкурентные преимущества</div>
+                <div class="card-content">
+                    Уникальные концепции и локальный колорит
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Слайд 6: Результаты -->
+    <div class="slide">
+        <h2>Результаты для клиента</h2>
+
+        <div class="metrics-grid" style="margin-bottom: 35px;">
+            <div class="metric-box" style="border-color: #2D5F4F;">
+                <div class="metric-value" style="color: #2D5F4F;">4 дня</div>
+                <div class="metric-label">Срок работы</div>
+            </div>
+            <div class="metric-box" style="border-color: #2D5F4F;">
+                <div class="metric-value" style="color: #2D5F4F;">20 000₽</div>
+                <div class="metric-label">Стоимость</div>
+            </div>
+            <div class="metric-box" style="border-color: #2D5F4F;">
+                <div class="metric-value" style="color: #2D5F4F;">100%</div>
+                <div class="metric-label">Одобрение</div>
+            </div>
+        </div>
+
+        <h3>Ценность для бизнеса:</h3>
+
+        <ul>
+            <li>Полное понимание премиального спа-рынка</li>
+            <li>Готовые данные для стратегического планирования</li>
+            <li>Сравнение с международными стандартами</li>
+            <li>Редактируемый формат для адаптации</li>
+        </ul>
+
+        <div class="quote-box" style="margin-top: 25px;">
+            "Спасибо, Алексей. Мне нравится. Именно то, что мне было нужно" — обратная связь после превью
+        </div>
+    </div>
+
+    <!-- Слайд 7: CTA -->
+    <div class="slide slide-title">
+        <h2 style="border: none; text-align: center; margin-bottom: 40px;">Нужно исследование?</h2>
+
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; max-width: 900px; margin: 30px auto;">
+            <div class="solution-block">
+                <strong>🌍 Международные рынки</strong>
+                <p>Анализ с источниками на иностранных языках</p>
+            </div>
+
+            <div class="solution-block">
+                <strong>📊 Структурированные данные</strong>
+                <p>Таблицы, сравнения, визуализация</p>
+            </div>
+
+            <div class="solution-block">
+                <strong>🎯 Премиум-сегменты</strong>
+                <p>Глубокий анализ luxury-индустрий</p>
+            </div>
+
+            <div class="solution-block">
+                <strong>✏️ Редактируемый формат</strong>
+                <p>HTML с возможностью правок</p>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 45px;">
+            <div style="font-size: 1.8em; color: #2D5F4F; font-weight: 600; margin-bottom: 25px;">
+                Сроки: от 2х дней | Стоимость: от 10 000 ₽
+            </div>
+
+            <a href="tel:+79994531985" class="cta-button">📱 +7 (999) 453-19-85</a>
+            <a href="https://t.me/AlekseySpinov" class="cta-button" style="margin-left: 20px;">💬 Telegram</a>
+
+            <div style="margin-top: 40px; color: #7A6F5D; font-size: 1.1em;">
+                <strong style="color: #2D5F4F;">Спинов Алексей</strong><br>
+                Маркетолог-аналитик
+            </div>
+
+            <div class="ornament" style="margin: 30px auto;"></div>
+
+            <div style="margin-top: 25px; padding: 20px; background: linear-gradient(135deg, #F9F6F0 0%, #F0EBE0 100%); border-radius: 12px; max-width: 600px; margin-left: auto; margin-right: auto; border: 1px solid #E8DCC8;">
+                <div style="color: #5A5145; font-size: 0.95em; line-height: 1.6;">
+                    <strong style="color: #C9A961;">P.S.</strong> Готов сначала сделать превью 5-7 страниц. Если подойдет — продолжим. Если нет — никаких обязательств.
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Навигация -->
+<div class="nav-container">
+    <button class="nav-btn prev" onclick="changeSlide(-1)">‹</button>
+    <button class="nav-btn next" onclick="changeSlide(1)">›</button>
+</div>
+
+<!-- Счетчик -->
+<div class="slide-counter">
+    <span class="current">1</span> / 7
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+
+    function showSlide(n) {
+        slides[currentSlide].classList.remove('active');
+
+        if (n >= totalSlides) {
+            currentSlide = 0;
+        } else if (n < 0) {
+            currentSlide = totalSlides - 1;
+        } else {
+            currentSlide = n;
+        }
+
+        slides[currentSlide].classList.add('active');
+        document.querySelector('.slide-counter .current').textContent = currentSlide + 1;
+    }
+
+    function changeSlide(direction) {
+        showSlide(currentSlide + direction);
+    }
+
+    // Клавиатурная навигация
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft') changeSlide(-1);
+        if (e.key === 'ArrowRight') changeSlide(1);
+    });
+
+    // Свайп для мобильных
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    document.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+
+    document.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    });
+
+    function handleSwipe() {
+        if (touchEndX < touchStartX - 50) changeSlide(1);
+        if (touchEndX > touchStartX + 50) changeSlide(-1);
+    }
+</script>
+
+</body>
+</html>

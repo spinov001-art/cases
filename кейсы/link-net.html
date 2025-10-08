@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кейс: Маркетинговое исследование для IT-стартапа Link-Net</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #FFF8F0 0%, #FFE5D9 50%, #B8F2E6 100%);
+            color: #2c3e50;
+            overflow-x: hidden;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            width: 90%;
+            max-width: 1200px;
+            height: 85vh;
+            position: absolute;
+            display: none;
+            animation: fadeIn 0.6s ease-in-out;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 25px 40px;
+            box-shadow: 0 30px 90px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 50%, #6C5B7B 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            letter-spacing: -1px;
+            line-height: 1.15;
+        }
+
+        h2 {
+            font-size: 1.7em;
+            font-weight: 600;
+            margin-bottom: 18px;
+            color: #5A4A7B;
+            text-align: center;
+        }
+
+        h3 {
+            font-size: 1.2em;
+            font-weight: 500;
+            margin: 15px 0 10px;
+            color: #7B6B8F;
+        }
+
+        .subtitle {
+            font-size: 1em;
+            color: #8B7BA8;
+            text-align: center;
+            margin-bottom: 18px;
+            font-weight: 300;
+            line-height: 1.4;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(145deg, #FFFFFF, #FFF4F0);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid #FFE5D9;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.1);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(255, 107, 157, 0.2);
+        }
+
+        .metric-value {
+            font-size: 1.8em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .metric-label {
+            font-size: 0.85em;
+            color: #7B6B8F;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #FFE5D9, #FFCDB2);
+            border: none;
+            color: #5A4A7B;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.2);
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(135deg, #FFCDB2, #FFB4A2);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 157, 0.3);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-number {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            color: #8B7BA8;
+            font-size: 18px;
+            font-weight: 600;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 50px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .highlight-box {
+            background: linear-gradient(145deg, #FFF8F0, #FFE5D9);
+            border: 2px solid #FFD4C9;
+            border-radius: 15px;
+            padding: 18px;
+            margin: 12px 0;
+            box-shadow: 0 15px 40px rgba(255, 107, 157, 0.15);
+        }
+
+        .list-item {
+            margin: 8px 0;
+            padding-left: 28px;
+            position: relative;
+            font-size: 0.9em;
+            line-height: 1.5;
+            color: #5A4A7B;
+        }
+
+        .list-item:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #FF6B9D;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .problem-card {
+            background: linear-gradient(145deg, #FFF4F0, #FFEBE5);
+            padding: 15px;
+            border-radius: 12px;
+            margin: 10px 0;
+            border-left: 4px solid #FF6B9D;
+        }
+
+        .solution-step {
+            background: linear-gradient(145deg, #E8F8F5, #D4F1E8);
+            padding: 15px;
+            border-radius: 12px;
+            margin: 10px 0;
+            border-left: 4px solid #52B69A;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 14px 40px;
+            background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1em;
+            font-weight: 700;
+            margin: 18px auto;
+            display: block;
+            width: fit-content;
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 50px rgba(255, 107, 157, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 60px rgba(255, 107, 157, 0.5);
+        }
+
+        .quote-box {
+            background: linear-gradient(145deg, #F0E6FF, #E6D9FF);
+            border-left: 4px solid #9B7EBD;
+            padding: 18px;
+            margin: 12px 0;
+            border-radius: 12px;
+            font-size: 0.95em;
+            font-style: italic;
+            color: #5A4A7B;
+            line-height: 1.5;
+            box-shadow: 0 15px 40px rgba(155, 126, 189, 0.15);
+        }
+
+        .stats-big {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #FF6B9D;
+            display: inline-block;
+            margin: 0 6px;
+        }
+
+        .timeline-item {
+            display: flex;
+            margin: 12px 0;
+            align-items: flex-start;
+            opacity: 0;
+            animation: slideInLeft 0.8s ease forwards;
+        }
+
+        .timeline-item:nth-child(1) { animation-delay: 0.1s; }
+        .timeline-item:nth-child(2) { animation-delay: 0.3s; }
+        .timeline-item:nth-child(3) { animation-delay: 0.5s; }
+        .timeline-item:nth-child(4) { animation-delay: 0.7s; }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .timeline-number {
+            font-size: 1.6em;
+            font-weight: 700;
+            color: #FF6B9D;
+            min-width: 55px;
+            text-align: center;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding: 14px;
+            background: linear-gradient(145deg, #FFF, #FFF8F0);
+            border-radius: 10px;
+            border-left: 3px solid #FF6B9D;
+            margin-left: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .result-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #52B69A, #76C893);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-weight: 600;
+            margin: 3px;
+            font-size: 0.75em;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 40px 30px;
+            }
+
+            h1 {
+                font-size: 2.2em;
+            }
+
+            h2 {
+                font-size: 1.8em;
+            }
+
+            .metric-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-item {
+                flex-direction: column;
+            }
+
+            .timeline-content {
+                margin-left: 0;
+                margin-top: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-number">
+            <span id="current-slide">1</span> / 7
+        </div>
+
+        <!-- Слайд 1: Титульный -->
+        <div class="slide active">
+            <h1>Как за 7 дней создали<br>инвестиционный кейс<br>для IT-стартапа</h1>
+            <p class="subtitle">
+                Реальный кейс работы с IT-стартапом Link-Net:<br>
+                От "это сложная задача" до "вы меня опять удивляете"
+            </p>
+            <div class="metric-grid" style="margin-top: 40px;">
+                <div class="metric-card">
+                    <div class="metric-value">7 дней</div>
+                    <div class="metric-label">От заявки до результата</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">166 стр</div>
+                    <div class="metric-label">Полное исследование</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">100%</div>
+                    <div class="metric-label">Довольный клиент</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 2: ВХОД -->
+        <div class="slide">
+            <h2>С чем пришел клиент</h2>
+            <div class="highlight-box">
+                <h3 style="text-align: center; margin: 0 0 15px 0;">Стартап Link-Net</h3>
+                <p style="text-align: center; font-size: 1em; line-height: 1.5; text-indent: 0; margin: 0;">
+                    <strong>Продукт:</strong> Менеджер закладок + социальная сеть<br>
+                    <strong>Цель:</strong> Привлечь инвестиции<br>
+                    <strong>Проблема:</strong> Нужен профессиональный кейс
+                </p>
+            </div>
+
+            <div class="problem-card">
+                <h3 style="margin: 0 0 8px 0;">💬 Первое сообщение:</h3>
+                <p style="font-size: 0.9em; line-height: 1.5; color: #5A4A7B; text-indent: 0; margin: 0;">
+                    <em>"Это диджитал-продукт, социальная сеть, в этом и сложность — любые показатели здесь менее очевидны. <strong>Уверен не каждый маркетолог возьмется за эту задачу.</strong> Возьметесь?"</em>
+                </p>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <h3 style="margin: 0 0 10px 0;">Что было у клиента:</h3>
+                <div class="list-item">Общий материал от команды</div>
+                <div class="list-item">Описание продукта на VC.ru</div>
+                <div class="list-item">Ограниченный бюджет (не готовы к 50 000 ₽)</div>
+            </div>
+        </div>
+
+        <!-- Слайд 3: ЗАДАЧА -->
+        <div class="slide">
+            <h2>Задача: создать кейс для инвесторов</h2>
+
+            <div class="highlight-box">
+                <h3 style="text-align: center; margin: 0 0 12px 0;">Что нужно было исследовать:</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px;">
+                    <div>
+                        <div class="list-item">Анализ российского рынка</div>
+                        <div class="list-item">5 целевых сегментов</div>
+                        <div class="list-item">Боли и готовность к миграции</div>
+                    </div>
+                    <div>
+                        <div class="list-item">Модель монетизации</div>
+                        <div class="list-item">Прогноз на 5 лет</div>
+                        <div class="list-item">Юнит-экономика и ROI</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <h3 style="margin: 0 0 10px 0;">Почему это было сложно:</h3>
+                <div class="problem-card">
+                    <strong style="color: #FF6B9D; font-size: 1em;">❌ Нет прямых аналогов в России</strong>
+                </div>
+                <div class="problem-card">
+                    <strong style="color: #FF6B9D; font-size: 1em;">❌ Гибридный продукт — нужна уникальная методология</strong>
+                </div>
+                <div class="problem-card">
+                    <strong style="color: #FF6B9D; font-size: 1em;">❌ ИИ не знает актуальной информации по РФ</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 4: РЕШЕНИЕ -->
+        <div class="slide">
+            <h2>Мой подход к решению</h2>
+
+            <div class="timeline-item">
+                <div class="timeline-number">01</div>
+                <div class="timeline-content">
+                    <h3 style="margin: 0; color: #FF6B9D; font-size: 1.1em;">Быстрый старт без предоплаты</h3>
+                    <p style="text-indent: 0; margin: 5px 0 0 0; font-size: 0.9em;">Сделал первую версию за 24 часа на свой риск</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-number">02</div>
+                <div class="timeline-content">
+                    <h3 style="margin: 0; color: #FF6B9D; font-size: 1.1em;">Глубокий desk research</h3>
+                    <p style="text-indent: 0; margin: 5px 0 0 0; font-size: 0.9em;">Claude Opus, GPT-4, Gemini + открытые источники</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-number">03</div>
+                <div class="timeline-content">
+                    <h3 style="margin: 0; color: #FF6B9D; font-size: 1.1em;">Адаптация под реальность</h3>
+                    <p style="text-indent: 0; margin: 5px 0 0 0; font-size: 0.9em;">Оперативно пересчитал всю финансовую модель под реальный бюджет</p>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-number">04</div>
+                <div class="timeline-content">
+                    <h3 style="margin: 0; color: #FF6B9D; font-size: 1.1em;">Бонусные материалы</h3>
+                    <p style="text-indent: 0; margin: 5px 0 0 0; font-size: 0.9em;">Презентация + аудио-подкаст бесплатно</p>
+                </div>
+            </div>
+
+            <div class="highlight-box" style="margin-top: 20px;">
+                <h3 style="text-align: center; margin: 0 0 10px 0; font-size: 1.1em;">Результат: полный инвестиционный пакет</h3>
+                <div style="display: flex; justify-content: center; gap: 8px; margin-top: 12px; flex-wrap: wrap;">
+                    <span class="result-badge">📊 166 стр</span>
+                    <span class="result-badge">📈 20 слайдов</span>
+                    <span class="result-badge">🎙 Подкаст</span>
+                    <span class="result-badge">💼 Готово</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 5: РЕЗУЛЬТАТ (метрики) -->
+        <div class="slide">
+            <h2>Конкретные результаты проекта</h2>
+
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <div class="metric-value">$15M</div>
+                    <div class="metric-label">Размер рынка РФ</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">70M</div>
+                    <div class="metric-label">Целевая аудитория</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">5 млн ₽</div>
+                    <div class="metric-label">Запрос инвестиций</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">4.7 млрд ₽</div>
+                    <div class="metric-label">Оценка к 2030</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">86-173x</div>
+                    <div class="metric-label">Возврат инвестору</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">591 млн ₽</div>
+                    <div class="metric-label">Выручка 2030</div>
+                </div>
+            </div>
+
+            <div class="solution-step" style="margin-top: 15px;">
+                <h3 style="margin: 0 0 10px 0; color: #52B69A; font-size: 1.1em;">Что вошло в исследование:</h3>
+                <div class="list-item">✓ Анализ рынка ($15M → $38M к 2030)</div>
+                <div class="list-item">✓ 5 целевых сегментов + конкурентный анализ</div>
+                <div class="list-item">✓ Финансовая модель на 5 лет</div>
+                <div class="list-item">✓ Юнит-экономика + стратегия выхода</div>
+            </div>
+        </div>
+
+        <!-- Слайд 6: ОТЗЫВ -->
+        <div class="slide">
+            <h2>Что сказал клиент</h2>
+
+            <div class="quote-box">
+                "Я приятно удивлен! <strong>За такой короткий срок так углубиться в тему</strong> и провести такое детальное исследование. <strong>Это потрясающе!</strong> По сути это то, что нам сейчас нужно!"
+            </div>
+
+            <div class="quote-box">
+                "Вы меня опять удивляете) <strong>Такой подход я встречаю первый раз на Кворке</strong>, хотя не первый год здесь)"
+            </div>
+
+            <div class="highlight-box" style="margin-top: 20px;">
+                <h3 style="text-align: center; margin: 0 0 15px 0; font-size: 1.2em;">Факты работы</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.2em; color: #FF6B9D; font-weight: 700;">2</div>
+                        <p style="font-size: 0.9em; color: #5A4A7B; margin: 5px 0 0 0;">Восторженных отзыва</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.2em; color: #52B69A; font-weight: 700;">7 дней</div>
+                        <div style="font-size: 0.9em; color: #5A4A7B; margin: 5px 0 0 0;">От старта до сдачи</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.2em; color: #9B7EBD; font-weight: 700;">0 ₽</div>
+                        <div style="font-size: 0.9em; color: #5A4A7B; margin: 5px 0 0 0;">Предоплаты</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2.2em; color: #FF6B9D; font-weight: 700;">100%</div>
+                        <div style="font-size: 0.9em; color: #5A4A7B; margin: 5px 0 0 0;">Удовлетворение</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Слайд 7: CTA -->
+        <div class="slide">
+            <h2 style="font-size: 1.4em; margin-bottom: 12px;">Готовы получить такой же результат?</h2>
+
+            <div class="highlight-box" style="padding: 15px; margin: 10px 0;">
+                <h3 style="text-align: center; margin: 0 0 8px 0; font-size: 1.1em;">Что вы получите:</h3>
+
+                <div class="solution-step" style="padding: 10px; margin: 6px 0;">
+                    <strong style="font-size: 0.95em; color: #52B69A;">📊 Комплексное исследование</strong>
+                    <p style="margin: 3px 0 0 0; text-indent: 0; font-size: 0.85em;">Анализ рынка, конкурентов, ЦА с цифрами</p>
+                </div>
+
+                <div class="solution-step" style="padding: 10px; margin: 6px 0;">
+                    <strong style="font-size: 0.95em; color: #52B69A;">💰 Финансовая модель</strong>
+                    <p style="margin: 3px 0 0 0; text-indent: 0; font-size: 0.85em;">TAM/SAM/SOM, юнит-экономика, прогнозы</p>
+                </div>
+
+                <div class="solution-step" style="padding: 10px; margin: 6px 0;">
+                    <strong style="font-size: 0.95em; color: #52B69A;">📈 Презентация + бонусы</strong>
+                    <p style="margin: 3px 0 0 0; text-indent: 0; font-size: 0.85em;">Pitch deck с ключевыми метриками</p>
+                </div>
+
+                <div class="solution-step" style="padding: 10px; margin: 6px 0;">
+                    <strong style="font-size: 0.95em; color: #52B69A;">⚡ Без риска</strong>
+                    <p style="margin: 3px 0 0 0; text-indent: 0; font-size: 0.85em;">Сначала работа — потом решение</p>
+                </div>
+            </div>
+
+            <a href="https://kwork.ru/marketing-research" class="cta-button" style="margin: 15px auto; padding: 12px 35px; font-size: 0.95em;">Заказать исследование</a>
+
+            <div style="text-align: center; margin-top: 15px;">
+                <p style="color: #8B7BA8; font-size: 0.85em; margin: 3px 0;">Маркетолог-аналитик</p>
+                <p style="font-size: 1.05em; color: #5A4A7B; font-weight: 700; margin: 3px 0;">Спинов Алексей Владимирович</p>
+                <p style="color: #FF6B9D; font-size: 0.9em; margin-top: 5px;">
+                    📞 +7 (999) 453-19-85 | 💬 @AlekseySpinov
+                </p>
+            </div>
+
+            <div style="text-align: center; margin-top: 12px; padding: 12px; background: linear-gradient(145deg, #E8F8F5, #D4F1E8); border-radius: 12px;">
+                <p style="font-size: 0.85em; color: #5A4A7B; line-height: 1.5; text-indent: 0; margin: 0;">
+                    <strong>P.S.</strong> Работу делаю до оплаты. Оцените результат — потом решайте. <strong style="color: #52B69A;">Нет риска.</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prev-btn" onclick="changeSlide(-1)">← Назад</button>
+        <button class="nav-btn" id="next-btn" onclick="changeSlide(1)">Вперед →</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 7;
+
+        function changeSlide(direction) {
+            const slides = document.querySelectorAll('.slide');
+            slides[currentSlide - 1].classList.remove('active');
+
+            currentSlide += direction;
+
+            if (currentSlide < 1) currentSlide = 1;
+            if (currentSlide > totalSlides) currentSlide = totalSlides;
+
+            slides[currentSlide - 1].classList.add('active');
+            document.getElementById('current-slide').textContent = currentSlide;
+
+            // Управление кнопками
+            document.getElementById('prev-btn').disabled = currentSlide === 1;
+            document.getElementById('next-btn').disabled = currentSlide === totalSlides;
+        }
+
+        // Клавиатурная навигация
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+
+        // Инициализация
+        document.getElementById('prev-btn').disabled = true;
+
+        // Свайп для мобильных
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) changeSlide(1);
+            if (touchEndX > touchStartX + 50) changeSlide(-1);
+        }
+
+        // Полноэкранный режим
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'f' || e.key === 'F') {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen();
+                } else {
+                    document.exitFullscreen();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

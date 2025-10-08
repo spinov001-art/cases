@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Коммерческое предложение • Маркетинговые исследования</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #1a202c;
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100vh;
+            padding: 40px 70px;
+            background: #FFFFFF;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            animation: slideIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+            pointer-events: none;
+        }
+
+        .slide-title {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #FFFFFF;
+        }
+
+        .slide-title::before {
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        }
+
+        .slide-title h1 {
+            font-size: 3.5em;
+            font-weight: 700;
+            margin-bottom: 25px;
+            line-height: 1.2;
+            letter-spacing: -2px;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .slide-title .subtitle {
+            font-size: 1.35em;
+            margin-bottom: 35px;
+            font-weight: 300;
+            opacity: 0.95;
+            line-height: 1.5;
+        }
+
+        .slide-title .highlight-name {
+            display: inline-block;
+            padding: 15px 40px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            margin-top: 15px;
+        }
+
+        h2 {
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            margin: 20px 0 15px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin: 20px 0;
+        }
+
+        .service-card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+
+        .service-icon {
+            font-size: 2.2em;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .service-title {
+            font-size: 1.15em;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .service-desc {
+            color: #718096;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .package-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #FFFFFF;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .package-price {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #667eea;
+            margin: 10px 0 5px;
+        }
+
+        .package-time {
+            font-size: 0.9em;
+            color: #718096;
+            margin-bottom: 12px;
+        }
+
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin: 20px 0;
+        }
+
+        .case-card {
+            background: #FFFFFF;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 18px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .case-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 50px rgba(102, 126, 234, 0.15);
+            border-color: #667eea;
+        }
+
+        .case-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #FFFFFF;
+            border-radius: 15px;
+            font-size: 0.75em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .case-title {
+            font-size: 1.05em;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .case-result {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 6px 12px;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: #FFFFFF;
+            border-radius: 8px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .case-stats {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .case-stat {
+            font-size: 0.8em;
+            color: #718096;
+        }
+
+        .case-stat strong {
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .benefits-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 18px 0;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px;
+            background: linear-gradient(135deg, #f7fafc 0%, #ffffff 100%);
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .benefit-item:hover {
+            transform: translateX(8px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.1);
+        }
+
+        .benefit-icon {
+            font-size: 1.6em;
+            flex-shrink: 0;
+        }
+
+        .benefit-text {
+            flex: 1;
+        }
+
+        .benefit-text strong {
+            display: block;
+            color: #2d3748;
+            font-size: 0.95em;
+            margin-bottom: 4px;
+        }
+
+        .benefit-text p {
+            color: #718096;
+            font-size: 0.85em;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        .problem-solution {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin: 15px 0;
+        }
+
+        .problem-box, .solution-box {
+            padding: 14px;
+            border-radius: 12px;
+            border: 2px solid;
+        }
+
+        .problem-box {
+            background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+            border-color: #fc8181;
+        }
+
+        .problem-box h4 {
+            color: #c53030;
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+
+        .problem-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .problem-box li {
+            color: #742a2a;
+            margin-bottom: 6px;
+            padding-left: 25px;
+            position: relative;
+            font-size: 0.85em;
+            line-height: 1.4;
+        }
+
+        .problem-box li::before {
+            content: '❌';
+            position: absolute;
+            left: 0;
+        }
+
+        .solution-box {
+            background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+            border-color: #48bb78;
+        }
+
+        .solution-box h4 {
+            color: #2f855a;
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+
+        .solution-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .solution-box li {
+            color: #22543d;
+            margin-bottom: 6px;
+            padding-left: 25px;
+            position: relative;
+            font-size: 0.85em;
+            line-height: 1.4;
+        }
+
+        .solution-box li::before {
+            content: '✅';
+            position: absolute;
+            left: 0;
+        }
+
+        .cta-section {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .pricing {
+            display: inline-block;
+            padding: 18px 40px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 18px;
+            margin-bottom: 22px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .pricing-text {
+            font-size: 1.6em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .urgency-box {
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #fef5e7 0%, #fdebd0 100%);
+            border: 2px solid #f39c12;
+            border-radius: 12px;
+            margin-bottom: 22px;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #7f6b3f;
+        }
+
+        .urgency-box strong {
+            color: #f39c12;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #FFFFFF;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .contact-info {
+            color: #718096;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .contact-info strong {
+            color: #2d3748;
+            font-size: 1.15em;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .nav-container {
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50%;
+            color: #FFFFFF;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.5);
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 50px;
+            right: 90px;
+            color: #667eea;
+            font-size: 1.3em;
+            font-weight: 700;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 25px;
+            border-radius: 50px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .slide-counter .current {
+            color: #764ba2;
+            font-size: 1.4em;
+        }
+
+        .process-timeline {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin: 25px 0;
+        }
+
+        .process-step {
+            text-align: center;
+            padding: 20px 15px;
+            background: linear-gradient(135deg, #f7fafc 0%, #ffffff 100%);
+            border-radius: 14px;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .process-step:hover {
+            transform: translateY(-8px);
+            border-color: #667eea;
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.15);
+        }
+
+        .process-number {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #FFFFFF;
+            border-radius: 50%;
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .process-title {
+            font-size: 1.05em;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .process-desc {
+            color: #718096;
+            font-size: 0.85em;
+            line-height: 1.4;
+        }
+
+        .guarantee-box {
+            background: linear-gradient(135deg, #fef5e7 0%, #fdebd0 100%);
+            border: 2px solid #f39c12;
+            border-radius: 14px;
+            padding: 16px 25px;
+            margin: 18px 0;
+            text-align: center;
+        }
+
+        .guarantee-box strong {
+            color: #f39c12;
+            font-size: 1.1em;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .guarantee-box p {
+            color: #7f6b3f;
+            font-size: 0.9em;
+            margin: 0;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+<div class="slideshow-container">
+
+    <!-- Слайд 1: Титульный -->
+    <div class="slide active slide-title">
+        <h1>Маркетинговые<br>исследования рынка</h1>
+        <div class="subtitle">Даю точные цифры и прогнозы за 3-7 дней, чтобы вы привлекли инвестиции,<br>запустили производство или вышли на новый рынок без рисков</div>
+        <div class="highlight-name">📊 Спинов Алексей • Маркетолог-аналитик</div>
+
+        <div style="margin-top: 35px; display: flex; justify-content: center; gap: 50px;">
+            <div>
+                <div style="font-size: 3em; font-weight: 700; margin-bottom: 10px;">24ч</div>
+                <div style="font-size: 1.1em; opacity: 0.9;">Экспресс-формат</div>
+            </div>
+            <div>
+                <div style="font-size: 3em; font-weight: 700; margin-bottom: 10px;">3-7 дней</div>
+                <div style="font-size: 1.1em; opacity: 0.9;">Стандартное исследование</div>
+            </div>
+            <div>
+                <div style="font-size: 3em; font-weight: 700; margin-bottom: 10px;">50+</div>
+                <div style="font-size: 1.1em; opacity: 0.9;">Проведенных исследований</div>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; max-width: 900px; margin-left: auto; margin-right: auto;">
+            <h3 style="text-align: center; margin-bottom: 18px; color: #FFFFFF; font-size: 1.4em;">Для кого это исследование</h3>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                <div style="padding: 14px 18px; background: rgba(255,255,255,0.15); border-radius: 12px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); text-align: center; font-size: 0.95em;">
+                    ✅ Стартапы, собирающие питч для инвесторов
+                </div>
+                <div style="padding: 14px 18px; background: rgba(255,255,255,0.15); border-radius: 12px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); text-align: center; font-size: 0.95em;">
+                    ✅ Бизнес, выходящий на новый рынок
+                </div>
+                <div style="padding: 14px 18px; background: rgba(255,255,255,0.15); border-radius: 12px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); text-align: center; font-size: 0.95em;">
+                    ✅ Производство, оценивающее спрос на продукт
+                </div>
+                <div style="padding: 14px 18px; background: rgba(255,255,255,0.15); border-radius: 12px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); text-align: center; font-size: 0.95em;">
+                    ✅ Компании, готовящие бизнес-план
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Слайд 2: Пакеты услуг -->
+    <div class="slide">
+        <h2>Три формата исследований</h2>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <span class="package-badge">⚡ ЭКСПРЕСС</span>
+                <div class="package-price">8 000 ₽</div>
+                <div class="package-time">24 часа</div>
+                <div class="service-title" style="font-size: 1.05em; margin: 10px 0 8px;">Проверю вашу бизнес-идею</div>
+                <div class="service-desc" style="font-size: 0.85em;">
+                    • Оценка размера рынка (TAM-SAM-SOM)<br>
+                    • Топ-5 конкурентов<br>
+                    • Боли и потребности ЦА<br>
+                    • 2 идеи для быстрого старта<br>
+                    • Вывод: стоит ли заходить<br>
+                    • PDF, 10-15 стр.
+                </div>
+            </div>
+
+            <div class="service-card">
+                <span class="package-badge" style="background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);">📊 СТАНДАРТ</span>
+                <div class="package-price">15 000 ₽</div>
+                <div class="package-time">3 дня</div>
+                <div class="service-title" style="font-size: 1.05em; margin: 10px 0 8px;">Рынок, конкуренты и ЦА с планом действий</div>
+                <div class="service-desc" style="font-size: 0.85em;">
+                    • Объём рынка за 3 года + SWOT + PEST<br>
+                    • 5 конкурентов: цены, УТП<br>
+                    • 3 портрета ЦА (Jobs-to-be-Done)<br>
+                    • Customer Journey Map<br>
+                    • 5 рекомендаций для роста<br>
+                    • PDF 25-35 стр. + презентация
+                </div>
+            </div>
+
+            <div class="service-card">
+                <span class="package-badge" style="background: linear-gradient(135deg, #C9A961 0%, #2D5F4F 100%);">💎 ПРЕМИУМ</span>
+                <div class="package-price">25 000 ₽</div>
+                <div class="package-time">7-14 дней</div>
+                <div class="service-title" style="font-size: 1.05em; margin: 10px 0 8px;">Глубокая аналитика и прогнозы</div>
+                <div class="service-desc" style="font-size: 0.85em;">
+                    • 10+ конкурентов + матрица позиционирования<br>
+                    • 5 персон ЦА с барьерами<br>
+                    • Прогнозы на 2 года (сценарный анализ)<br>
+                    • SWOT, PEST, Porter's 5 Forces<br>
+                    • 10 гипотез роста<br>
+                    • PDF 40-50 стр. + презентация 15-20 сл.
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 20px; text-align: center;">
+            <h3 style="margin-bottom: 15px;">Кому подойдут исследования</h3>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; max-width: 800px; margin: 0 auto;">
+                <div style="background: linear-gradient(135deg, #f7fafc 0%, #ffffff 100%); padding: 12px; border-radius: 10px; border-left: 4px solid #667eea; font-size: 0.9em;">
+                    ✓ Стартапам — перед запуском продукта
+                </div>
+                <div style="background: linear-gradient(135deg, #f7fafc 0%, #ffffff 100%); padding: 12px; border-radius: 10px; border-left: 4px solid #667eea; font-size: 0.9em;">
+                    ✓ Бизнесу — для выхода на новый рынок
+                </div>
+                <div style="background: linear-gradient(135deg, #f7fafc 0%, #ffffff 100%); padding: 12px; border-radius: 10px; border-left: 4px solid #667eea; font-size: 0.9em;">
+                    ✓ Инвесторам — для скрининга ниш
+                </div>
+                <div style="background: linear-gradient(135deg, #f7fafc 0%, #ffffff 100%); padding: 12px; border-radius: 10px; border-left: 4px solid #667eea; font-size: 0.9em;">
+                    ✓ Компаниям — перед масштабированием
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Слайд 3: Портфолио -->
+    <div class="slide">
+        <h2>Реализованные проекты</h2>
+
+        <div class="cases-grid">
+            <div class="case-card">
+                <span class="case-tag">Промышленность</span>
+                <div class="case-title">Рынок полипропиленовой нити</div>
+                <p style="color: #718096; font-size: 0.85em; line-height: 1.4; margin-top: 6px;">
+                    Комплексное исследование для стартапа: анализ производства, конкурентов, финмодель с NPV/IRR/ROI. Сегментация по 6 отраслям.
+                </p>
+                <div class="case-result">→ Запущено производство, первая партия 500 кг</div>
+                <div class="case-stats">
+                    <div class="case-stat"><strong>14 400₽</strong></div>
+                    <div class="case-stat">75 страниц</div>
+                    <div class="case-stat">11 дней</div>
+                </div>
+            </div>
+
+            <div class="case-card">
+                <span class="case-tag" style="background: linear-gradient(135deg, #C9A961 0%, #2D5F4F 100%);">Premium Wellness</span>
+                <div class="case-title">Премиальные SPA-объекты</div>
+                <p style="color: #718096; font-size: 0.85em; line-height: 1.4; margin-top: 6px;">
+                    Глобальное исследование luxury-индустрии: Россия, Европа, Америка, Эмираты. Сравнительные таблицы, позиционирование, цены.
+                </p>
+                <div class="case-result">→ Стратегия на 2025: выход на 3 новых рынка</div>
+                <div class="case-stats">
+                    <div class="case-stat"><strong>20 000₽</strong></div>
+                    <div class="case-stat">10+ объектов</div>
+                    <div class="case-stat">4 дня</div>
+                </div>
+            </div>
+
+            <div class="case-card">
+                <span class="case-tag" style="background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 100%);">IT-стартап</span>
+                <div class="case-title">Link-Net • Social Bookmarks</div>
+                <p style="color: #718096; font-size: 0.85em; line-height: 1.4; margin-top: 6px;">
+                    Инвестиционный кейс для IT-продукта: анализ рынка $15M→$38M, TAM/SAM/SOM, юнит-экономика, 5 целевых сегментов, прогноз на 5 лет.
+                </p>
+                <div class="case-result">→ Питч готов, идет привлечение инвестиций</div>
+                <div class="case-stats">
+                    <div class="case-stat"><strong>10 000₽</strong></div>
+                    <div class="case-stat">166 страниц</div>
+                    <div class="case-stat">7 дней</div>
+                </div>
+            </div>
+
+            <div class="case-card">
+                <span class="case-tag" style="background: linear-gradient(135deg, #0066FF 0%, #4A90E2 100%);">Кибербезопасность</span>
+                <div class="case-title">Рынок SOC-услуг</div>
+                <p style="color: #718096; font-size: 0.85em; line-height: 1.4; margin-top: 6px;">
+                    Экспресс-исследование за 24 часа: спрос на SOC 2024-2026, статистика MaxPatrol и KUMA, прогнозы, кликабельные источники.
+                </p>
+                <div class="case-result">→ Оценка рынка получена, услуга запущена</div>
+                <div class="case-stats">
+                    <div class="case-stat"><strong>10 000₽</strong></div>
+                    <div class="case-stat">Экспресс</div>
+                    <div class="case-stat">24 часа</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Слайд 4: Как работаю -->
+    <div class="slide">
+        <h2>Как я работаю</h2>
+
+        <div class="process-timeline">
+            <div class="process-step">
+                <div class="process-number">1</div>
+                <div class="process-title">Обсуждение</div>
+                <div class="process-desc">Анализируем задачу, уточняем требования, согласовываем формат и сроки</div>
+            </div>
+
+            <div class="process-step">
+                <div class="process-number">2</div>
+                <div class="process-title">Исследование</div>
+                <div class="process-desc">Desk research с использованием AI-инструментов, открытых источников, статистики</div>
+            </div>
+
+            <div class="process-step">
+                <div class="process-number">3</div>
+                <div class="process-title">Превью</div>
+                <div class="process-desc">Отправляю первые 5-7 страниц для оценки подхода и качества</div>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 25px;">Почему вам выгодно со мной работать</h3>
+
+        <div class="benefits-list">
+            <div class="benefit-item">
+                <span class="benefit-icon">⚡</span>
+                <div class="benefit-text">
+                    <strong>Не теряете время</strong>
+                    <p>Получите данные за 24-48 часов и сразу действуйте, пока конкуренты думают</p>
+                </div>
+            </div>
+
+            <div class="benefit-item">
+                <span class="benefit-icon">🎯</span>
+                <div class="benefit-text">
+                    <strong>Убедите инвесторов</strong>
+                    <p>Все цифры с кликабельными источниками — никто не усомнится в надежности</p>
+                </div>
+            </div>
+
+            <div class="benefit-item">
+                <span class="benefit-icon">💎</span>
+                <div class="benefit-text">
+                    <strong>Снизите риски</strong>
+                    <p>Узнаете реальный объем рынка, прежде чем вложите деньги в запуск</p>
+                </div>
+            </div>
+
+            <div class="benefit-item">
+                <span class="benefit-icon">🤝</span>
+                <div class="benefit-text">
+                    <strong>Без финансовых рисков</strong>
+                    <p>Сначала делаю превью — оцениваете результат, потом решаете</p>
+                </div>
+            </div>
+
+            <div class="benefit-item">
+                <span class="benefit-icon">🌍</span>
+                <div class="benefit-text">
+                    <strong>Выйдете на зарубежные рынки</strong>
+                    <p>Работаю с источниками на английском, анализирую международные данные</p>
+                </div>
+            </div>
+
+            <div class="benefit-item">
+                <span class="benefit-icon">📊</span>
+                <div class="benefit-text">
+                    <strong>Привлечете финансирование</strong>
+                    <p>NPV, IRR, ROI, юнит-экономика — всё что нужно инвесторам</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="guarantee-box">
+            <strong>⭐ Гарантия качества</strong>
+            <p>Если превью не устроит — никаких обязательств. Работаю до результата, который вас удовлетворит.</p>
+        </div>
+    </div>
+
+    <!-- Слайд 5: CTA и контакты -->
+    <div class="slide">
+        <h2 style="text-align: center;">Что входит в исследование</h2>
+
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 18px;">
+            <div class="service-card" style="padding: 18px;">
+                <div style="font-size: 1.5em; margin-bottom: 10px;">📄</div>
+                <strong style="display: block; color: #2d3748; font-size: 1em; margin-bottom: 6px;">Подробное исследование</strong>
+                <p style="color: #718096; margin: 0; font-size: 0.85em;">HTML-формат с возможностью редактирования</p>
+            </div>
+
+            <div class="service-card" style="padding: 18px;">
+                <div style="font-size: 1.5em; margin-bottom: 10px;">🔗</div>
+                <strong style="display: block; color: #2d3748; font-size: 1em; margin-bottom: 6px;">Все источники</strong>
+                <p style="color: #718096; margin: 0; font-size: 0.85em;">Кликабельные ссылки на каждый факт</p>
+            </div>
+
+            <div class="service-card" style="padding: 18px;">
+                <div style="font-size: 1.5em; margin-bottom: 10px;">📊</div>
+                <strong style="display: block; color: #2d3748; font-size: 1em; margin-bottom: 6px;">Таблицы и графики</strong>
+                <p style="color: #718096; margin: 0; font-size: 0.85em;">Визуализация данных для наглядности</p>
+            </div>
+
+            <div class="service-card" style="padding: 18px;">
+                <div style="font-size: 1.5em; margin-bottom: 10px;">💼</div>
+                <strong style="display: block; color: #2d3748; font-size: 1em; margin-bottom: 6px;">Готовые выводы</strong>
+                <p style="color: #718096; margin: 0; font-size: 0.85em;">Рекомендации для принятия решений</p>
+            </div>
+        </div>
+
+        <h3 style="text-align: center; margin-top: 25px;">Готовы начать?</h3>
+
+        <div class="cta-section" style="margin-top: 15px;">
+            <div class="pricing">
+                <div class="pricing-text">от 8 000 ₽ до 25 000 ₽</div>
+            </div>
+
+            <div class="urgency-box">
+                <strong>⏰ Превью за 24 часа — бесплатно</strong><br>
+                Начнем прямо сейчас. Оцените качество уже завтра.
+            </div>
+
+            <div class="cta-buttons">
+                <a href="tel:+79994531985" class="cta-button">
+                    📱 +7 (999) 453-19-85
+                </a>
+                <a href="https://t.me/AlekseySpinov" class="cta-button">
+                    💬 Написать в Telegram
+                </a>
+            </div>
+
+            <div class="contact-info">
+                <strong>Спинов Алексей Владимирович</strong>
+                Маркетолог-аналитик<br>
+                Опыт работы с B2B и B2C проектами
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px; padding: 16px; background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%); border-radius: 14px;">
+            <p style="font-size: 0.85em; color: #718096; line-height: 1.4; margin: 0;">
+                <strong style="color: #667eea; font-size: 1.05em;">P.S.</strong><br>
+                Работаю с вдумчивыми клиентами, готовыми инвестировать в качественный анализ.<br>
+                Первое превью — бесплатно. Платите только если результат устраивает.
+            </p>
+        </div>
+    </div>
+
+</div>
+
+<!-- Навигация -->
+<div class="nav-container">
+    <button class="nav-btn prev" onclick="changeSlide(-1)">‹</button>
+    <button class="nav-btn next" onclick="changeSlide(1)">›</button>
+</div>
+
+<!-- Счетчик -->
+<div class="slide-counter">
+    <span class="current">1</span> / 5
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+
+    function showSlide(n) {
+        slides[currentSlide].classList.remove('active');
+
+        if (n >= totalSlides) {
+            currentSlide = 0;
+        } else if (n < 0) {
+            currentSlide = totalSlides - 1;
+        } else {
+            currentSlide = n;
+        }
+
+        slides[currentSlide].classList.add('active');
+        document.querySelector('.slide-counter .current').textContent = currentSlide + 1;
+    }
+
+    function changeSlide(direction) {
+        showSlide(currentSlide + direction);
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft') changeSlide(-1);
+        if (e.key === 'ArrowRight') changeSlide(1);
+    });
+
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    document.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+
+    document.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    });
+
+    function handleSwipe() {
+        if (touchEndX < touchStartX - 50) changeSlide(1);
+        if (touchEndX > touchStartX + 50) changeSlide(-1);
+    }
+</script>
+
+</body>
+</html>
